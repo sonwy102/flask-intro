@@ -13,6 +13,8 @@ AWESOMENESS = [
     'oh-so-not-meh', 'brilliant', 'ducky', 'coolio', 'incredible',
     'wonderful', 'smashing', 'lovely']
 
+DISS = ['annoying', 'mean', 'stupid']
+
 
 @app.route('/')
 def start_here():
@@ -32,7 +34,7 @@ def start_here():
 def say_hello():
     """Say hello and prompt for user's name."""
 
-    return """
+    return f"""
     <!doctype html>
     <html>
       <head>
@@ -46,7 +48,7 @@ def say_hello():
           <div>
             <label for="compliment">How are you feeling today?</label>
             <select name="compliment">
-              <option value="awesome">Awesome</option>
+              <option value={AWESOMENESS[0]}>{AWESOMENESS[0]}</option>
               <option value="terrific">Terrific</option>
               <option value="fantastic">Fantastic</option>
               <option value="neato">Neato</option>
@@ -60,10 +62,23 @@ def say_hello():
               <option value="wonderful">Wonderful</option>
               <option value="smashing">Smashing</option>
               <option value="lovely">Lovely</option>
-            </div><br>
+          </div>
 
-            <br><input type="submit" value="Submit">
-          </form>       
+          <input type="submit" value="Submit">
+        </form>
+
+        <form action="/diss">
+          <p>What's your name? <input type="text" name="person"></p>
+          <div>
+              <label for="diss">Do you want to be dissed?</label>
+              <select name="diss">
+                <option value="annoying">{DISS[0]}</option>
+                <option value="mean">{DISS[1]}</option>
+                <option value="stupid">{DISS[2]}</option>
+          </div>
+
+          <input type="submit" value="Submit">
+        </form>      
       </body>
     </html>
     """
@@ -89,6 +104,26 @@ def greet_person():
     </html>
     """
 
+
+@app.route('/diss')
+def diss_person():
+  """"""
+  player = request.args.get("person")
+
+  diss = request.args.get("diss")
+
+  return f"""
+  <!doctype html>
+  <html>
+    <head>
+      <title>A Diss</title>
+    </head>
+    <body>
+      Hi, {player}! I think you're {diss}!
+    </body>
+  </html>
+  """
+  
 
 if __name__ == '__main__':
     # debug=True gives us error messages in the browser and also "reloads"
